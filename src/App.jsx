@@ -1,10 +1,8 @@
-import logo from './logo.svg';
-import './App.css';
-
+import Header from './containers/header';
 function App() {
   return (
-    <div className="App">
-      <h1>saad</h1>
+    <div>
+      <Header />
     </div>
   );
 }
