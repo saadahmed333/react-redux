@@ -1,30 +1,70 @@
-import React from "react";
-
+import axios from "axios";
+import React, {useEffect, useState} from "react";
+import { useDispatch, useSelector } from "react-redux";
 const ProductComponent = () => {
-  const count = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const dispatch = useDispatch();
+  const product = useSelector((state) => state.products)
+  const card = useSelector((state) => state.card.products)
+  const delivery = useSelector((state) => state.card.delivery)
+  // console.log(product)
+  console.log(card)
+  const fetchData = async () => {
+    const response = await axios.get("https://fakestoreapi.com/products")
+    // console.log(response.data);
+    dispatch({type: "GET_PRODUCT", payload: response.data})
+  }
+
+  const productData = (id,category,price) => {
+    const dataArray = [id,category,price]
+    dispatch({type: "ADD_ITEMS", payload: dataArray})
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, []);
+
   return (
-    <div className="p-[20px]">
-      <div className="flex flex-wrap">
-        {count.map((v) => {
+    <>
+    <div className="flex justify-end items-center mx-[50px] my-[10px] relative ">
+      <img className="w-[60px] " src="https://png.pngtree.com/element_our/png/20181031/shopping-cart-png_224349.jpg" alt="" />
+      <span className="font-bold bg-slate-300 w-[20px] rounded-xl flex justify-center absolute bottom-10 right-[-5px]">1</span>
+    </div>
+    <div className="p-[20px] flex">
+      <div className="flex flex-wrap justify-center w-[80%]">
+        { 
+        product.map((value) => {
           return (
-            <div className="border flex flex-col items-center p-[10px] border-blue-400 mx-[10px] my-[10px]">
-              <img
-                src="data:image/jpeg;base64,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"
+            <div key={value.id} className="border flex flex-col items-center p-[10px] border-blue-400 mx-[10px] my-[10px]">
+              <img 
+              className="w-[200px] h-[200px]"
+                src={value.image}
                 alt=""
               />
               <div className="text-center">
-                <span>Name: Iphone</span>
+                <span>Category: {value.category}</span>
                 <br />
-                <span>Model: 6s</span>
+                <span>Price: {value.price}</span>
               </div>
-              <button className="border py-[10px] px-[25px] my-[10px] bg-blue-400">
+              <button className="border py-[10px] px-[25px] my-[10px] bg-blue-400" onClick={() => productData(value.id,value.category,value.price)}>
                 Add To Cart
               </button>
             </div>
           );
         })}
       </div>
+      <div className="w-[20%] bg-slate-500 text-white">
+        <div>
+          <h1 className="text-center mt-[20px] text-[30px] font-bold">CART</h1>
+          <div className="mt-[20px] ml-[20px] font-bold h-[200px] flex flex-col justify-between">
+            <p>ITEMS : <span className="ml-[50px] text-[20px] font-bold">{card.length}</span></p>
+            <p>TAX : </p>
+            <p>DELIVERY : <span className="ml-[20px] text-[20px] font-bold">{delivery}</span></p>
+            <p>TOTAL : </p>
+          </div>
+        </div>
+      </div>
     </div>
+    </>
   );
 };
 
