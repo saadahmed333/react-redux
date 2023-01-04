@@ -8,35 +8,38 @@ const ProductComponent = () => {
   const delivery = useSelector((state) => state.card.delivery)
   const tax = useSelector((state) => state.card.tax)
   // console.log(product)
-  console.log(card)
+  // console.log(card)
   const fetchData = async () => {
     const response = await axios.get('https://fakestoreapi.com/products')
     // console.log(response.data);
     dispatch({ type: 'GET_PRODUCT', payload: response.data })
   }
 
-  const productData = (id, category, price) => {
-    const dataArray = [id, category, price]
+  const productData = (id, title, price) => {
+    const dataArray = [id, title, price]
     dispatch({ type: 'ADD_ITEMS', payload: dataArray })
   }
 
-  //   var total;
-  //  const totalPrice = () => {
-  //     console.log(card)
-  //      card.map((v) => {
-  //       console.log(v[2])
-  //        total += v[2]
-
-  //     })
-  //   }
+    var total = [];
+    var totals = 0;
+   const totalPrice = () => {
+       card.map((value) => {
+        // console.log(value[2])
+        total.push(value[2])
+        for (let i = 0; i < total.length; i++ ) {
+          // console.log(total[i])
+          totals += total[i]
+          console.log(totals)
+        }
+       })
+    }
   useEffect(() => {
-    //  totalPrice()
-    //   console.log(total)
-  }, [])
+     totalPrice()
+  }, [total])
 
   useEffect(() => {
     fetchData()
-    console.log(card, '<============card')
+    // console.log(card, '<============card')
   }, [])
 
   return (
@@ -61,14 +64,14 @@ const ProductComponent = () => {
               >
                 <img className="w-[200px] h-[200px]" src={value.image} alt="" />
                 <div className="text-center">
-                  <span>Category: {value.category}</span>
+                  <span>Title: {value.title.split(" ")[2]}</span>
                   <br />
                   <span>Price: {value.price}</span>
                 </div>
                 <button
                   className="border py-[10px] px-[25px] my-[10px] bg-blue-400"
                   onClick={() =>
-                    productData(value.id, value.category, value.price)
+                    productData(value.id, value.title.split(" ")[2], value.price)
                   }
                 >
                   Add To Cart
