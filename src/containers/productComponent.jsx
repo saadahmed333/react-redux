@@ -21,16 +21,11 @@ const ProductComponent = () => {
   }
 
     var total = [];
-    var totals = 0;
    const totalPrice = () => {
-       card.map((value) => {
-        // console.log(value[2])
+     card.map((value) => {
+         console.log(value)
+        console.log(value[2])
         total.push(value[2])
-        for (let i = 0; i < total.length; i++ ) {
-          // console.log(total[i])
-          totals += total[i]
-          console.log(totals)
-        }
        })
     }
   useEffect(() => {
