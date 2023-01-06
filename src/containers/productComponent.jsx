@@ -3,75 +3,62 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   // GET_PRODUCT,
-  ADD_ITEMS,
+  // ADD_ITEMS,
   ITEMS_TOTAL,
   INCREMENT_ITEM,
-  DECREMENT_ITEM
+  DECREMENT_ITEM,
 } from "../Redux/reducer/constants";
-
+import Cards from "../components/cards";
 const ProductComponent = () => {
-  const [tax, setTax] = useState(0);
-  const [subTotal, setSubtotal] = useState(0);
   const [updatequantity, setUpdateQuantity] = useState(0);
   const dispatch = useDispatch();
   const product = useSelector((state) => state.products);
   const cartProducts = useSelector((state) => state.card.products);
   const total = useSelector((state) => state.card.total);
   const delivery = useSelector((state) => state.card.delivery);
-
-
-
-
-  const productData = (id, name, price, image, quantity) => {
-    const dataArray = { id, name, price, image, quantity };
-    dispatch({ type: ADD_ITEMS, payload: dataArray });
-  };
-
-  const quantity = [];
+  const [deliver, setDeliver] = useState(0);
 
   const productsTax = () => {
-      console.log(subTotal)
-      console.log(updatequantity)
-      console.log(delivery)
-      if(delivery) {
-        
-      }
-  }
+    let formula = 0;
+    let delii = 0;
+    let num = 0;
+    if (updatequantity > 3) {
+      formula = updatequantity / 3.2;
+      delii = Math.floor(formula) * 2;
+      num = delii * 120;
+      setDeliver(num);
+      dispatch({ type: "DELIVERY_CHARGES", payload: deliver });
+    }
+  };
 
-
-
+  const [subTotals, setSubtotals] = useState(0);
   let quantityTotal = 0;
+  const quantity = [];
   const itemTotal = () => {
-    let subTotal = 0;
+    let itemsTotal = 0;
     cartProducts.map((item) => {
-      subTotal += item.price;
+      itemsTotal += item.price;
       quantity.push(item.quantity);
     });
-    quantity.map((v) => {
-      quantityTotal += v;
-    });
+    quantity.map((v) => (quantityTotal += v));
     setUpdateQuantity(quantityTotal);
-    // setTax(20 * cartProducts.length);
-    setSubtotal(total);
-    dispatch({ type: ITEMS_TOTAL, payload: subTotal });
-    productsTax()
+    setSubtotals(itemsTotal);
+    dispatch({ type: ITEMS_TOTAL, payload: subTotals });
   };
 
   useEffect(() => {
+    productsTax();
     itemTotal();
-  }, [productData]);
-
+  });
 
   const increment = (id, price, quantity) => {
     const deleteArray = { id, price, quantity };
-    dispatch({type: INCREMENT_ITEM, payload: deleteArray})
-  }
+    dispatch({ type: INCREMENT_ITEM, payload: deleteArray });
+  };
   const decrement = (id, price, quantity) => {
     const addArray = { id, price, quantity };
-    dispatch({type: DECREMENT_ITEM, payload: addArray})
-  }
-
-
+    dispatch({ type: DECREMENT_ITEM, payload: addArray });
+  };
 
   return (
     <>
@@ -87,34 +74,8 @@ const ProductComponent = () => {
       </div>
       <div className="px-[20px] pb-[20px] flex">
         <div className="flex flex-wrap justify-center w-[60%] border mr-[5px] overflow-scroll overflow-x-hidden h-[80vh]">
-          {product.map((value) => {
-            return (
-              <div
-                key={value.id}
-                className="border flex flex-col items-center p-[10px] border-blue-400 mx-[10px] my-[10px]"
-              >
-                <img className="w-[200px] h-[200px]" src={value.image} alt="" />
-                <div className="text-center">
-                  <span>Name: {value.name}</span>
-                  <br />
-                  <span>Price: {value.price}</span>
-                </div>
-                <button
-                  className="border py-[10px] px-[25px] my-[10px] bg-blue-400"
-                  onClick={() => {
-                    productData(
-                      value.id,
-                      value.name,
-                      value.price,
-                      value.image,
-                      value.quantity
-                    );
-                  }}
-                >
-                  Add To Cart
-                </button>
-              </div>
-            );
+          {product.map((value, index) => {
+            return <Cards key={index} value={value} />;
           })}
         </div>
         <div className="w-[40%] bg-slate-500 text-white h-[80vh] overflow-scroll overflow-x-hidden">
@@ -135,16 +96,14 @@ const ProductComponent = () => {
               </p>
               <p>
                 Delivery :
-                <span className="ml-[50px] text-[20px] font-bold">{delivery}</span>
+                <span className="ml-[50px] text-[20px] font-bold">
+                  {delivery ? delivery : 120}
+                </span>
               </p>
-              {/* <p>
-                TAX :
-                <span className="ml-[50px] text-[20px] font-bold">{tax}</span>
-              </p> */}
               <p>
                 SUB TOTAL :
                 <span className="ml-[20px] text-[20px] font-bold">
-                  {subTotal}
+                  {subTotals}
                 </span>
               </p>
             </div>
@@ -165,9 +124,23 @@ const ProductComponent = () => {
                   </div>
                   <div className="text-center">
                     <p>Quantity</p>
-                    <button onClick={() => decrement(value.id, value.price, value.quantity)} className="bg-white text-black w-[20px] font-bold mr-[10px]">-</button>
+                    <button
+                      onClick={() =>
+                        decrement(value.id, value.price, value.quantity)
+                      }
+                      className="bg-white text-black w-[20px] font-bold mr-[10px]"
+                    >
+                      -
+                    </button>
                     <span>{value.quantity}</span>
-                    <button onClick={() => increment(value.id, value.price, value.quantity)} className="bg-white text-black w-[20px] font-bold ml-[10px]">+</button>
+                    <button
+                      onClick={() =>
+                        increment(value.id, value.price, value.quantity)
+                      }
+                      className="bg-white text-black w-[20px] font-bold ml-[10px]"
+                    >
+                      +
+                    </button>
                   </div>
                   <div className="text-center">
                     <p>Price</p>

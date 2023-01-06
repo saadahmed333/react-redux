@@ -49,7 +49,6 @@ const initialState = {
   card: {
     products: [],
     total: 0,
-    delivery: 0,
     delivery: 120,
   },
 };
@@ -83,7 +82,6 @@ export const productReducer = (state = initialState, action) => {
         ...state,
         card: {
           ...state.card,
-          delivery: 120,
           total: action.payload,
         },
       };
@@ -119,13 +117,16 @@ export const productReducer = (state = initialState, action) => {
           addProducts,
         },
       };
+       case "DELIVERY_CHARGES":
+      return {
+        ...state,
+        card: {
+          ...state.card,
+          delivery: action.payload,
+        },
+      };
     default:
       return state;
   }
 };
 
-// case GET_PRODUCT:
-//   return {
-//     ...state,
-//     products: action.payload,
-//   };
