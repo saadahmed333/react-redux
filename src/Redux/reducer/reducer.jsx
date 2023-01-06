@@ -1,5 +1,13 @@
 import Image from "../../assets/download.jpeg";
-import { GET_PRODUCT, ITEMS_TOTAL, ADD_ITEMS, INCREMENT_ITEM, DECREMENT_ITEM } from "./constants";
+import {
+  // GET_PRODUCT,
+  ITEMS_TOTAL,
+  ADD_ITEMS,
+  INCREMENT_ITEM,
+  DECREMENT_ITEM,
+} from "./constants";
+
+
 const initialState = {
   products: [
     {
@@ -42,6 +50,7 @@ const initialState = {
     products: [],
     total: 0,
     delivery: 0,
+    delivery: 120,
   },
 };
 
@@ -85,7 +94,6 @@ export const productReducer = (state = initialState, action) => {
       const decreaseProduct = state.products.find(
         (items) => items.id === action.payload.id
       );
-      console.log(decreaseProduct.price)
       deleteProducts.quantity--;
       deleteProducts.price -= decreaseProduct.price;
       return {
@@ -95,24 +103,22 @@ export const productReducer = (state = initialState, action) => {
           deleteProducts,
         },
       };
-      case INCREMENT_ITEM:
-        const addProducts = state.card.products.find(
-          (item) => item.id === action.payload.id
-        );
-        console.log(addProducts)
-        const increaseProduct= state.products.find(
-          (items) => items.id === action.payload.id
-        );
-        console.log(increaseProduct.price)
-        addProducts.quantity++;
-        addProducts.price += increaseProduct.price;
-        return {
-          ...state,
-          card: {
-            products: [...state.card.products],
-            addProducts,
-          },
-        };
+    case INCREMENT_ITEM:
+      const addProducts = state.card.products.find(
+        (item) => item.id === action.payload.id
+      );
+      const increaseProduct = state.products.find(
+        (items) => items.id === action.payload.id
+      );
+      addProducts.quantity++;
+      addProducts.price += increaseProduct.price;
+      return {
+        ...state,
+        card: {
+          products: [...state.card.products],
+          addProducts,
+        },
+      };
     default:
       return state;
   }

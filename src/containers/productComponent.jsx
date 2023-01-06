@@ -1,8 +1,8 @@
-import axios from "axios";
+// import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  GET_PRODUCT,
+  // GET_PRODUCT,
   ADD_ITEMS,
   ITEMS_TOTAL,
   INCREMENT_ITEM,
@@ -17,6 +17,10 @@ const ProductComponent = () => {
   const product = useSelector((state) => state.products);
   const cartProducts = useSelector((state) => state.card.products);
   const total = useSelector((state) => state.card.total);
+  const delivery = useSelector((state) => state.card.delivery);
+
+
+
 
   const productData = (id, name, price, image, quantity) => {
     const dataArray = { id, name, price, image, quantity };
@@ -24,6 +28,18 @@ const ProductComponent = () => {
   };
 
   const quantity = [];
+
+  const productsTax = () => {
+      console.log(subTotal)
+      console.log(updatequantity)
+      console.log(delivery)
+      if(delivery) {
+        
+      }
+  }
+
+
+
   let quantityTotal = 0;
   const itemTotal = () => {
     let subTotal = 0;
@@ -35,9 +51,10 @@ const ProductComponent = () => {
       quantityTotal += v;
     });
     setUpdateQuantity(quantityTotal);
-    setTax(20 * cartProducts.length);
-    setSubtotal(tax + total);
+    // setTax(20 * cartProducts.length);
+    setSubtotal(total);
     dispatch({ type: ITEMS_TOTAL, payload: subTotal });
+    productsTax()
   };
 
   useEffect(() => {
@@ -46,12 +63,10 @@ const ProductComponent = () => {
 
 
   const increment = (id, price, quantity) => {
-    console.log(id)
     const deleteArray = { id, price, quantity };
     dispatch({type: INCREMENT_ITEM, payload: deleteArray})
   }
   const decrement = (id, price, quantity) => {
-    console.log(id)
     const addArray = { id, price, quantity };
     dispatch({type: DECREMENT_ITEM, payload: addArray})
   }
@@ -119,9 +134,13 @@ const ProductComponent = () => {
                 <span className="ml-[50px] text-[20px] font-bold">{total}</span>
               </p>
               <p>
+                Delivery :
+                <span className="ml-[50px] text-[20px] font-bold">{delivery}</span>
+              </p>
+              {/* <p>
                 TAX :
                 <span className="ml-[50px] text-[20px] font-bold">{tax}</span>
-              </p>
+              </p> */}
               <p>
                 SUB TOTAL :
                 <span className="ml-[20px] text-[20px] font-bold">
@@ -146,9 +165,9 @@ const ProductComponent = () => {
                   </div>
                   <div className="text-center">
                     <p>Quantity</p>
-                    <button onClick={() => increment(value.id, value.price, value.quantity)} className="bg-white text-black w-[20px] font-bold mr-[10px]">+</button>
+                    <button onClick={() => decrement(value.id, value.price, value.quantity)} className="bg-white text-black w-[20px] font-bold mr-[10px]">-</button>
                     <span>{value.quantity}</span>
-                    <button onClick={() => decrement(value.id, value.price, value.quantity)} className="bg-white text-black w-[20px] font-bold ml-[10px]">-</button>
+                    <button onClick={() => increment(value.id, value.price, value.quantity)} className="bg-white text-black w-[20px] font-bold ml-[10px]">+</button>
                   </div>
                   <div className="text-center">
                     <p>Price</p>
