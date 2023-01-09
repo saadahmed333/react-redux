@@ -11,12 +11,13 @@ import {
 import Cards from "../components/cards";
 const ProductComponent = () => {
   const [updatequantity, setUpdateQuantity] = useState(0);
+  const [subTotals, setSubtotals] = useState(0);
+  const [deliver, setDeliver] = useState(0);
   const dispatch = useDispatch();
   const product = useSelector((state) => state.products);
   const cartProducts = useSelector((state) => state.card.products);
   const total = useSelector((state) => state.card.total);
   const delivery = useSelector((state) => state.card.delivery);
-  const [deliver, setDeliver] = useState(0);
 
   const productsTax = () => {
     let formula = 0;
@@ -31,7 +32,6 @@ const ProductComponent = () => {
     }
   };
 
-  const [subTotals, setSubtotals] = useState(0);
   let quantityTotal = 0;
   const quantity = [];
   const itemTotal = () => {

@@ -7,7 +7,6 @@ import {
   DECREMENT_ITEM,
 } from "./constants";
 
-
 const initialState = {
   products: [
     {
@@ -16,7 +15,8 @@ const initialState = {
       name: "pent",
       price: 300,
       quantity: 1,
-      details: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem ipsum eligendi quibusdam nesciunt ullam ipsam obcaecati voluptates nobis, iusto eaque!"
+      details:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem ipsum eligendi quibusdam nesciunt ullam ipsam obcaecati voluptates nobis, iusto eaque!",
     },
     {
       id: 2,
@@ -24,7 +24,8 @@ const initialState = {
       name: "shirt",
       price: 200,
       quantity: 1,
-      details: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem ipsum eligendi quibusdam nesciunt ullam ipsam obcaecati voluptates nobis, iusto eaque!"
+      details:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem ipsum eligendi quibusdam nesciunt ullam ipsam obcaecati voluptates nobis, iusto eaque!",
     },
     {
       id: 3,
@@ -32,7 +33,8 @@ const initialState = {
       name: "Tie",
       price: 500,
       quantity: 1,
-      details: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem ipsum eligendi quibusdam nesciunt ullam ipsam obcaecati voluptates nobis, iusto eaque!"
+      details:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem ipsum eligendi quibusdam nesciunt ullam ipsam obcaecati voluptates nobis, iusto eaque!",
     },
     {
       id: 4,
@@ -40,7 +42,8 @@ const initialState = {
       name: "Inner",
       price: 700,
       quantity: 1,
-      details: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem ipsum eligendi quibusdam nesciunt ullam ipsam obcaecati voluptates nobis, iusto eaque!"
+      details:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem ipsum eligendi quibusdam nesciunt ullam ipsam obcaecati voluptates nobis, iusto eaque!",
     },
     {
       id: 5,
@@ -48,7 +51,8 @@ const initialState = {
       name: "Boxer",
       price: 200,
       quantity: 1,
-      details: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem ipsum eligendi quibusdam nesciunt ullam ipsam obcaecati voluptates nobis, iusto eaque!"
+      details:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem ipsum eligendi quibusdam nesciunt ullam ipsam obcaecati voluptates nobis, iusto eaque!",
     },
   ],
 
@@ -58,10 +62,33 @@ const initialState = {
     delivery: 120,
   },
 
-  productDetail: {
-    comments: ["saad", "ahmed", "ali"],
-    reply: ["ibaad", "bilal", "wajahat"]
-  }
+  productDetail: [
+    {
+      id: 1,
+      comments: ["this is pent"],
+      reply: ["ibaad"],
+    },
+    {
+      id: 2,
+      comments: ["this is shirt"],
+      reply: ["bilal"],
+    },
+    {
+      id: 3,
+      comments: ["this is tie"],
+      reply: ["wajahat"],
+    },
+    {
+      id: 4,
+      comments: ["this is inner", "this"],
+      reply: ["saad"],
+    },
+    {
+      id: 5,
+      comments: ["this is boxer"],
+      reply: ["taha"],
+    },
+  ],
 };
 
 export const productReducer = (state = initialState, action) => {
@@ -128,7 +155,7 @@ export const productReducer = (state = initialState, action) => {
           addProducts,
         },
       };
-       case "DELIVERY_CHARGES":
+    case "DELIVERY_CHARGES":
       return {
         ...state,
         card: {
@@ -136,8 +163,23 @@ export const productReducer = (state = initialState, action) => {
           delivery: action.payload,
         },
       };
+    case "COMMENTS_DATA":
+      return {
+        ...state,
+        productDetail: {
+          comments: [...state.productDetail.comments, action.payload],
+        },
+      };
+    case "DELETE_COMMENTS":
+      let old_comments = [...state.productDetail.comments];
+      old_comments.splice(action.payload, 1);
+      return {
+        ...state,
+        productDetail: {
+          comments: old_comments,
+        },
+      };
     default:
       return state;
   }
 };
-
