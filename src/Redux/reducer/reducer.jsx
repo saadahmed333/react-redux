@@ -51,11 +51,17 @@ const initialState = {
       details: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem ipsum eligendi quibusdam nesciunt ullam ipsam obcaecati voluptates nobis, iusto eaque!"
     },
   ],
+
   card: {
     products: [],
     total: 0,
     delivery: 120,
   },
+
+  productDetail: {
+    comments: ["saad", "ahmed", "ali"],
+    reply: ["ibaad", "bilal", "wajahat"]
+  }
 };
 
 export const productReducer = (state = initialState, action) => {
