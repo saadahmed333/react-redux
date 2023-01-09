@@ -80,7 +80,7 @@ const initialState = {
     },
     {
       id: 4,
-      comments: ["this is inner", "this"],
+      comments: ["this is inner"],
       reply: ["saad"],
     },
     {
@@ -166,19 +166,18 @@ export const productReducer = (state = initialState, action) => {
     case "COMMENTS_DATA":
       return {
         ...state,
-        productDetail: {
-          comments: [...state.productDetail.comments, action.payload],
-        },
+        productDetail: action.payload
       };
     case "DELETE_COMMENTS":
-      let old_comments = [...state.productDetail.comments];
-      old_comments.splice(action.payload, 1);
       return {
         ...state,
-        productDetail: {
-          comments: old_comments,
-        },
+        productDetail: action.payload
       };
+      case "REPLY_DATA":
+        return {
+          ...state,
+          productDetail: action.payload
+        };
     default:
       return state;
   }

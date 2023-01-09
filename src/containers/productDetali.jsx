@@ -1,3 +1,4 @@
+import { type } from "@testing-library/user-event/dist/type";
 import React, { useRef, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -10,10 +11,12 @@ const ProductDetali = () => {
   const { id, image, name, price, details } = filterProduct;
 
   const [commentState, setCommentState] = useState([]);
+  const [replyState, setReplyState] = useState([]);
   const fetchId = () => {
     for (let i = 0; i < comments.length; i++) {
       if (id == comments[i].id) {
         setCommentState(comments[i].comments);
+        setReplyState(comments[i].reply);
       }
     }
   };
@@ -22,23 +25,56 @@ const ProductDetali = () => {
   }, []);
 
   const inputText = useRef();
-  const [commentArray, setCommentArray] = useState();
   const commentData = () => {
-    const arr = [];
-    console.log(inputText.current.value);
-    arr.push(inputText.current.value);
-    setCommentArray(arr);
-    dispatch({ type: "COMMENTS_DATA", payload: inputText.current.value });
+    let myComments = [...comments];
+    for (let i = 0; i < myComments.length; i++) {
+      if (id == myComments[i].id) {
+        myComments[i].comments.push(inputText.current.value);
+        dispatch({ type: "COMMENTS_DATA", payload: myComments });
+      }
+    }
+    inputText.current.value = ""
   };
 
-  const [accord, setAccord] = useState();
-  const replyBtn = (index) => {
-    setAccord(index);
-  };
 
   const deleteComment = (index) => {
-    dispatch({ type: "DELETE_COMMENTS", payload: index });
+    console.log(index);
+    let myComments = [...comments];
+    for (let i = 0; i < myComments.length; i++) {
+      if (id == myComments[i].id) {
+        myComments[i].comments.splice(index, 1);
+        dispatch({ type: "DELETE_COMMENTS", payload: myComments });
+      }
+    }
   };
+
+
+  
+  const [accord, setAccord] = useState();
+  const replyBtnOn = (ids, items) => {
+    setAccord(ids);
+    replyData(ids, items)
+  };
+
+  const replyText = useRef();
+  const replyData = (Ids, items) => {
+      let myComments = [...comments];
+    console.log(Ids)
+    console.log(items)
+    const filterProduct = myComments.find((items) => items.comments == items);
+    console.log(filterProduct)
+    // for (let i = 0; i < myComments.length; i++) {
+    //   if (Ids == myComments[i].reply) {
+        // console.log(myComments[i].reply)
+    //     myComments[i].reply.push(replyText.current.value);
+    //     console.log(myComments[i].reply)
+    //     dispatch({ type: "REPLY_DATA", payload: myComments });
+    //   }
+    // }
+    // replyText.current.value = ""
+  };
+
+
 
   return (
     <>
@@ -94,12 +130,12 @@ const ProductDetali = () => {
                     Delete
                   </button>
                 </div>
-                <p className="text-[30px] ml-[20px] text-black border rounded-2xl pl-[20px] bg-slate-300 w-[500px]">
+                <p className="text-[30px] ml-[20px] text-black border rounded-3xl pl-[20px] bg-slate-300 w-[500px]">
                   {items}
                 </p>
                 <button
                   className="ml-[30px] text-blue-500"
-                  onClick={() => replyBtn(index)}
+                  onClick={() => replyBtnOn(index, items)}
                 >
                   reply
                 </button>
@@ -107,49 +143,35 @@ const ProductDetali = () => {
                 <button className="ml-[20px] text-blue-500">share</button>
 
                 <div className="ml-[200px] mt-[20px] flex flex-col gap-3">
-                  <span className="border bg-slate-100 px-[20px] py-[5px] rounded-2xl">
-                    saad
-                  </span>
-                  <span className="border bg-slate-100 px-[20px] py-[5px] rounded-2xl">
-                    Lorem ipsum dolor sit amet.
-                  </span>
-                  <span className="border bg-slate-100 px-[20px] py-[5px] rounded-2xl">
-                    saad
-                  </span>
-                </div>
+                  {replyState.map((items, index) => {
+                    return (
+                      <span
+                        key={index}
+                        className="border bg-slate-100 px-[20px] py-[5px] rounded-2xl"
+                      >
+                        {items}
+                      </span>
+                    );
+                  })}
                 {accord == index && (
-                  <div className="flex justify-center mt-[30px]">
+                    <div className="flex justify-center mt-[30px]">
                     <input
                       className="border-blue-400 border-[2px] h-[40px] w-[500px] pl-[10px] outline-none"
                       type="text"
                       placeholder="Reply"
-                    />
-                    <button className="border-blue-400 border-[2px] px-[20px] ml-[5px]">
+                      ref={replyText}
+                      />
+                    <button onClick={() => replyData()} className="border-blue-400 border-[2px] px-[20px] ml-[5px]">
                       send
                     </button>
                   </div>
                 )}
+                </div>
               </div>
             );
           })}
         </div>
       </div>
-      {/* <div className="border w-[50%] h-[500px] pt-[20px]">
-          <p className="text-[30px] ml-[20px] text-black border rounded-2xl pl-[20px] bg-slate-300 w-[500px]">This Product Is Amazing</p>
-          <button className="ml-[30px] text-blue-500">reply</button>
-          <span className="ml-[20px]">.</span>
-          <button className="ml-[20px] text-blue-500">share</button>
-
-        <div className="ml-[200px] mt-[20px] flex flex-col gap-3">
-            <span className="border bg-slate-100 px-[20px] py-[5px] rounded-2xl">saad</span>
-            <span className="border bg-slate-100 px-[20px] py-[5px] rounded-2xl">Lorem ipsum dolor sit amet.</span>
-            <span className="border bg-slate-100 px-[20px] py-[5px] rounded-2xl">saad</span>
-        </div>
-          <div className="flex justify-center mt-[30px]">
-            <input className="border-blue-400 border-[2px] h-[40px] w-[500px] pl-[10px] outline-none" type="text" placeholder="Reply" />
-            <button className="border-blue-400 border-[2px] px-[20px] ml-[5px]">send</button>
-          </div>
-        </div> */}
     </>
   );
 };
