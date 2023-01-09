@@ -103,7 +103,7 @@ const ProductComponent = () => {
               <p>
                 SUB TOTAL :
                 <span className="ml-[20px] text-[20px] font-bold">
-                  {subTotals}
+                  {subTotals + delivery}
                 </span>
               </p>
             </div>

@@ -16,6 +16,7 @@ const initialState = {
       name: "pent",
       price: 300,
       quantity: 1,
+      details: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem ipsum eligendi quibusdam nesciunt ullam ipsam obcaecati voluptates nobis, iusto eaque!"
     },
     {
       id: 2,
@@ -23,6 +24,7 @@ const initialState = {
       name: "shirt",
       price: 200,
       quantity: 1,
+      details: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem ipsum eligendi quibusdam nesciunt ullam ipsam obcaecati voluptates nobis, iusto eaque!"
     },
     {
       id: 3,
@@ -30,6 +32,7 @@ const initialState = {
       name: "Tie",
       price: 500,
       quantity: 1,
+      details: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem ipsum eligendi quibusdam nesciunt ullam ipsam obcaecati voluptates nobis, iusto eaque!"
     },
     {
       id: 4,
@@ -37,6 +40,7 @@ const initialState = {
       name: "Inner",
       price: 700,
       quantity: 1,
+      details: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem ipsum eligendi quibusdam nesciunt ullam ipsam obcaecati voluptates nobis, iusto eaque!"
     },
     {
       id: 5,
@@ -44,6 +48,7 @@ const initialState = {
       name: "Boxer",
       price: 200,
       quantity: 1,
+      details: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem ipsum eligendi quibusdam nesciunt ullam ipsam obcaecati voluptates nobis, iusto eaque!"
     },
   ],
   card: {
