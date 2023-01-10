@@ -1,12 +1,11 @@
-// import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  // GET_PRODUCT,
-  // ADD_ITEMS,
   ITEMS_TOTAL,
   INCREMENT_ITEM,
   DECREMENT_ITEM,
+  END_INCREMENT,
+  DELIVERY_CHARGES
 } from "../Redux/reducer/constants";
 import Cards from "../components/cards";
 const ProductComponent = () => {
@@ -28,7 +27,7 @@ const ProductComponent = () => {
       delii = Math.floor(formula) * 2;
       num = delii * 120;
       setDeliver(num);
-      dispatch({ type: "DELIVERY_CHARGES", payload: deliver });
+      dispatch({ type: DELIVERY_CHARGES, payload: deliver });
     }
   };
 
@@ -52,12 +51,23 @@ const ProductComponent = () => {
   });
 
   const increment = (id, price, quantity) => {
-    const deleteArray = { id, price, quantity };
-    dispatch({ type: INCREMENT_ITEM, payload: deleteArray });
-  };
-  const decrement = (id, price, quantity) => {
     const addArray = { id, price, quantity };
-    dispatch({ type: DECREMENT_ITEM, payload: addArray });
+    dispatch({ type: INCREMENT_ITEM, payload: addArray });
+  };
+
+
+  const decrement = (id, price, quantity, index) => {
+    const addProducts = [...cartProducts]
+    for (let i = 0; i < addProducts.length; i++) {
+      const deleteArray = { id, price, quantity };
+      if (quantity == 1) {
+            addProducts.splice(index, 1);
+            dispatch({ type: END_INCREMENT, payload: addProducts });
+        }
+        else {
+          dispatch({ type: DECREMENT_ITEM, payload:  deleteArray});
+        }
+    }
   };
 
   return (
@@ -126,7 +136,7 @@ const ProductComponent = () => {
                     <p>Quantity</p>
                     <button
                       onClick={() =>
-                        decrement(value.id, value.price, value.quantity)
+                        decrement(value.id, value.price, value.quantity, index)
                       }
                       className="bg-white text-black w-[20px] font-bold mr-[10px]"
                     >

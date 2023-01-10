@@ -9,13 +9,7 @@ const Cards = ({ value }) => {
     dispatch({ type: ADD_ITEMS, payload: dataArray });
   };
 
-//   const locationChange = () => {
-    
-//   }
-//   onClick={locationChange()}
-
   return (
-    <Link to={`/product/${value.id}`}>
     <div className="border flex flex-col items-center p-[10px] border-blue-400 mx-[10px] my-[10px]">
       <img className="w-[200px] h-[200px]" src={value.image} alt="" />
       <div className="text-center">
@@ -37,8 +31,10 @@ const Cards = ({ value }) => {
       >
         Add To Cart
       </button>
+      <Link to={`/product/${value.id}`}>
+        <button>See More {">"}</button>
+      </Link>
     </div>
-    </Link>
   );
 };
 

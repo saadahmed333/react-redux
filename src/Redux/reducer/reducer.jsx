@@ -1,10 +1,15 @@
+import { comment } from "postcss";
 import Image from "../../assets/download.jpeg";
 import {
-  // GET_PRODUCT,
   ITEMS_TOTAL,
   ADD_ITEMS,
   INCREMENT_ITEM,
   DECREMENT_ITEM,
+  DELETE_COMMENTS,
+  DELIVERY_CHARGES,
+  REPLY_DATA,
+  COMMENTS_DATA,
+  END_INCREMENT,
 } from "./constants";
 
 const initialState = {
@@ -62,32 +67,45 @@ const initialState = {
     delivery: 120,
   },
 
+  // productDetail: [
+  //   {
+  //     id: 1,
+  //     comment: ["saad"],
+  //     reply: ["iiii"]
+  //   }
+  // ]
+
   productDetail: [
-    {
-      id: 1,
-      comments: ["this is pent"],
-      reply: ["ibaad"],
-    },
-    {
-      id: 2,
-      comments: ["this is shirt"],
-      reply: ["bilal"],
-    },
-    {
-      id: 3,
-      comments: ["this is tie"],
-      reply: ["wajahat"],
-    },
-    {
-      id: 4,
-      comments: ["this is inner"],
-      reply: ["saad"],
-    },
-    {
-      id: 5,
-      comments: ["this is boxer"],
-      reply: ["taha"],
-    },
+    // {
+    //   id: 1,
+    //   comments: ["this is pent"],
+    //   reply: ["saad"],
+    //   ref: 1,
+    // },
+    // {
+    //   id: 2,
+    //   comments: ["this is shirt"],
+    //   reply: ["bilal"],
+    //   ref: 2,
+    // },
+    // {
+    //   id: 3,
+    //   comments: ["this is tie"],
+    //   reply: ["wajahat"],
+    //   ref: 3,
+    // },
+    // {
+    //   id: 4,
+    //   comments: ["this is inner"],
+    //   reply: ["saad"],
+    //   ref: 4,
+    // },
+    // {
+    //   id: 5,
+    //   comments: ["this is boxer"],
+    //   reply: ["taha"],
+    //   ref: 5,
+    // },
   ],
 };
 
@@ -155,7 +173,14 @@ export const productReducer = (state = initialState, action) => {
           addProducts,
         },
       };
-    case "DELIVERY_CHARGES":
+    case END_INCREMENT:
+      return {
+        ...state,
+        card: {
+          products: action.payload,
+        },
+      };
+    case DELIVERY_CHARGES:
       return {
         ...state,
         card: {
@@ -163,21 +188,23 @@ export const productReducer = (state = initialState, action) => {
           delivery: action.payload,
         },
       };
-    case "COMMENTS_DATA":
+    case COMMENTS_DATA:
+      console.log(action.payload)
       return {
         ...state,
         productDetail: action.payload
+        
       };
-    case "DELETE_COMMENTS":
+    case DELETE_COMMENTS:
       return {
         ...state,
-        productDetail: action.payload
+        productDetail: action.payload,
       };
-      case "REPLY_DATA":
-        return {
-          ...state,
-          productDetail: action.payload
-        };
+    case REPLY_DATA:
+      return {
+        ...state,
+        productDetail: action.payload,
+      };
     default:
       return state;
   }

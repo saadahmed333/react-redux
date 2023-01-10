@@ -1,6 +1,11 @@
 
-export const GET_PRODUCT = "GET_PRODUCT";
+// export const GET_PRODUCT = "GET_PRODUCT";
 export const ADD_ITEMS = "ADD_ITEMS";
 export const ITEMS_TOTAL = "ITEMS_TOTAL";
 export const INCREMENT_ITEM = "INCREMENT_ITEM";
 export const DECREMENT_ITEM = "DECREMENT_ITEM";
+export const END_INCREMENT = "END_INCREMENT";
+export const DELIVERY_CHARGES = "DELIVERY_CHARGES";
+export const COMMENTS_DATA = "COMMENTS_DATA";
+export const DELETE_COMMENTS = "DELETE_COMMENTS";
+export const REPLY_DATA = "REPLY_DATA";
