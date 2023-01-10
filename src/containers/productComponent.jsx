@@ -17,22 +17,24 @@ const ProductComponent = () => {
   const cartProducts = useSelector((state) => state.card.products);
   const total = useSelector((state) => state.card.total);
   const delivery = useSelector((state) => state.card.delivery);
-
   const productsTax = () => {
     let formula = 0;
     let delii = 0;
     let num = 0;
     if (updatequantity > 3) {
-      formula = updatequantity / 3.2;
-      delii = Math.floor(formula) * 2;
+      formula = updatequantity / 3 + 1;
+      delii = Math.floor(formula) * 1;
       num = delii * 120;
       setDeliver(num);
       dispatch({ type: DELIVERY_CHARGES, payload: deliver });
     }
+    else {
+      dispatch({ type: DELIVERY_CHARGES, payload: 120 });
+    }
   };
 
-  let quantityTotal = 0;
   const quantity = [];
+  let quantityTotal = 0;
   const itemTotal = () => {
     let itemsTotal = 0;
     cartProducts.map((item) => {
@@ -44,9 +46,9 @@ const ProductComponent = () => {
     setSubtotals(itemsTotal);
     dispatch({ type: ITEMS_TOTAL, payload: subTotals });
   };
-
+  
   useEffect(() => {
-    productsTax();
+    productsTax()
     itemTotal();
   });
 
@@ -69,7 +71,10 @@ const ProductComponent = () => {
         }
     }
   };
+  
 
+
+  const tax = total / 100 * 15;
   return (
     <>
       <div className="flex justify-end items-center mx-[50px] my-[10px] relative ">
@@ -101,8 +106,12 @@ const ProductComponent = () => {
                 </span>
               </p>
               <p>
-                TOTAL :
+              SUB TOTAL :
                 <span className="ml-[50px] text-[20px] font-bold">{total}</span>
+              </p>
+              <p>
+                TAX :
+                <span className="ml-[50px] text-[20px] font-bold">{`15%`}</span>
               </p>
               <p>
                 Delivery :
@@ -111,9 +120,9 @@ const ProductComponent = () => {
                 </span>
               </p>
               <p>
-                SUB TOTAL :
+              TOTAL :
                 <span className="ml-[20px] text-[20px] font-bold">
-                  {subTotals + delivery}
+                  { updatequantity > 3 ? total + delivery + tax  : total + delivery + tax }
                 </span>
               </p>
             </div>

@@ -22,7 +22,6 @@ const ProductDetali = () => {
   const inputText = useRef();
   const commentData = () => {
     let num = Math.random();
-    console.log(num);
     let myComments = [...comments];
     myComments.push({
       id: id,
@@ -32,13 +31,11 @@ const ProductDetali = () => {
     });
     dispatch({ type: "COMMENTS_DATA", payload: myComments });
     setChange(!change);
-    inputText.current.value = ""
+    inputText.current.value = "";
   };
 
-
-
   const deleteComment = (index) => {
-    console.log(index)
+    console.log(index);
     let myComments = [...comments];
     for (let i = 0; i < myComments.length; i++) {
       if (id == myComments[i].id) {
@@ -60,13 +57,11 @@ const ProductDetali = () => {
     for (let i = 0; i < myComments.length; i++) {
       if (id == myComments[i].id && ref === myComments[i].ref) {
         myComments[i].reply.push(replyText.current.value);
-        console.log(myComments[i].reply);
         dispatch({ type: REPLY_DATA, payload: myComments });
       }
     }
-    replyText.current.value = ""
+    replyText.current.value = "";
   };
-
 
   return (
     <>
@@ -135,9 +130,13 @@ const ProductDetali = () => {
                 <button className="ml-[20px] text-blue-500">share</button>
 
                 <div className="ml-[200px] mt-[20px] flex flex-col gap-3">
-                  <span className="border bg-slate-100 px-[20px] py-[5px] rounded-2xl">
-                    {items.reply}
-                  </span>
+                  { items.reply.map((itemss, index) => {
+                      return (
+                        <span key={index} className="border bg-slate-100 px-[20px] py-[5px] rounded-2xl">
+                        {itemss}
+                      </span>
+                      )
+                  })}
                   {accord == index && (
                     <div className="flex justify-center mt-[30px]">
                       <input

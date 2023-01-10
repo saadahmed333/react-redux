@@ -64,48 +64,11 @@ const initialState = {
   card: {
     products: [],
     total: 0,
-    delivery: 120,
+    delivery: 0,
+    tax: 15,
   },
 
-  // productDetail: [
-  //   {
-  //     id: 1,
-  //     comment: ["saad"],
-  //     reply: ["iiii"]
-  //   }
-  // ]
-
   productDetail: [
-    // {
-    //   id: 1,
-    //   comments: ["this is pent"],
-    //   reply: ["saad"],
-    //   ref: 1,
-    // },
-    // {
-    //   id: 2,
-    //   comments: ["this is shirt"],
-    //   reply: ["bilal"],
-    //   ref: 2,
-    // },
-    // {
-    //   id: 3,
-    //   comments: ["this is tie"],
-    //   reply: ["wajahat"],
-    //   ref: 3,
-    // },
-    // {
-    //   id: 4,
-    //   comments: ["this is inner"],
-    //   reply: ["saad"],
-    //   ref: 4,
-    // },
-    // {
-    //   id: 5,
-    //   comments: ["this is boxer"],
-    //   reply: ["taha"],
-    //   ref: 5,
-    // },
   ],
 };
 
@@ -189,7 +152,6 @@ export const productReducer = (state = initialState, action) => {
         },
       };
     case COMMENTS_DATA:
-      console.log(action.payload)
       return {
         ...state,
         productDetail: action.payload
