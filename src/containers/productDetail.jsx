@@ -3,7 +3,8 @@ import React, { useRef, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { REPLY_DATA } from "../Redux/reducer/constants";
-const ProductDetali = () => {
+import ReactStars from "react-stars";
+const ProductDetail = () => {
   const dispatch = useDispatch();
   const { productId } = useParams();
   const selectedProduct = useSelector((state) => state.products);
@@ -12,12 +13,28 @@ const ProductDetali = () => {
   const { id, image, name, price, details } = filterProduct;
   const [change, setChange] = useState(false);
   const [commentState, setCommentState] = useState([]);
+  const [starRating, setStarRating] = useState();
+
+  const productRating = [];
+  let productStarRating = 0;
   const fetchId = () => {
-    setCommentState(comments.filter((item) => item.id === id));
+    const rating = comments.filter((item) => item.id === id)
+    setCommentState(rating);
+    for (let i = 0; i < rating.length; i++) {
+      productRating.push(rating[i].star)
+      productStarRating += rating[i].star
+    }
+    setStarRating(productStarRating / productRating.length)
   };
+
   useEffect(() => {
     fetchId();
   }, [change]);
+
+  let star = 0;
+  const ratingChanged = (newRating) => {
+    star = newRating;
+  };
 
   const inputText = useRef();
   const commentData = () => {
@@ -28,6 +45,7 @@ const ProductDetali = () => {
       comments: [inputText.current.value],
       reply: [],
       ref: num,
+      star: star,
     });
     dispatch({ type: "COMMENTS_DATA", payload: myComments });
     setChange(!change);
@@ -70,6 +88,15 @@ const ProductDetali = () => {
           <img src={image} alt="" />
         </div>
         <div className="border-[2px] w-[600px] px-[20px] py-[50px]">
+          <div className="flex justify-end items-center">
+            <span className="mr-[10px]">Rating :</span>
+            <ReactStars 
+                    edit={true}
+                    count={5}
+                    value={starRating}
+                    size={24}
+                    color2={"#ffd700"} />
+          </div>
           <p className="text-[20px] font-semibold">
             Name : <span className="text-[20px] font-normal">{name}</span>
           </p>
@@ -86,6 +113,12 @@ const ProductDetali = () => {
 
       <div className="flex flex-col justify-center items-center">
         <div className="mt-[20px]">
+          <ReactStars
+            count={5}
+            onChange={ratingChanged}
+            size={24}
+            color2={"#ffd700"}
+          />
           <input
             className="border-[2px] w-[500px] px-[10px] py-[5px]"
             type="text"
@@ -109,7 +142,14 @@ const ProductDetali = () => {
                 key={index}
                 className="pb-[20px] border-b-2 rounded-3xl border mb-[10px]"
               >
-                <div className="flex justify-end my-[10px] mx-[10px]">
+                <div className="flex justify-between my-[10px] mx-[10px]">
+                  <ReactStars
+                    edit={true}
+                    count={5}
+                    value={items.star}
+                    size={24}
+                    color2={"#ffd700"}
+                  />
                   <button
                     className="bg-blue-400 text-white px-[20px] py-[5px] rounded-2xl"
                     onClick={() => deleteComment(index)}
@@ -130,12 +170,15 @@ const ProductDetali = () => {
                 <button className="ml-[20px] text-blue-500">share</button>
 
                 <div className="ml-[200px] mt-[20px] flex flex-col gap-3">
-                  { items.reply.map((itemss, index) => {
-                      return (
-                        <span key={index} className="border bg-slate-100 px-[20px] py-[5px] rounded-2xl">
+                  {items.reply.map((itemss, index) => {
+                    return (
+                      <span
+                        key={index}
+                        className="border bg-slate-100 px-[20px] py-[5px] rounded-2xl"
+                      >
                         {itemss}
                       </span>
-                      )
+                    );
                   })}
                   {accord == index && (
                     <div className="flex justify-center mt-[30px]">
@@ -163,4 +206,4 @@ const ProductDetali = () => {
   );
 };
 
-export default ProductDetali;
+export default ProductDetail;
